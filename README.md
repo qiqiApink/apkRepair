@@ -29,20 +29,20 @@
 │   ├── LibScout.toml (LibScout's config file)
 │   └── logback.xml (log4j configuration file)
 ├── libs
-│		 dependencies
+│    dependencies
 ├── my-lib-repo
-│		 tpl .jar / .aar file and .xml file
+│    tpl .jar / .aar file and .xml file
 ├── patch
-│		 dex patch files(*.dex)
+│    dex patch files(*.dex)
 ├── patchedAPK
-│		 output directory: patched apk files
+│    output directory: patched apk files
 ├── profile
-│		 tpl profile(*.libv)
+│    tpl profile(*.libv)
 ├── profile.sh (generate profiles for libraries)
 ├── Sdk
-│		 dx tool
+│    dx tool
 └── src
-		 source directory of apkRepair
+     source directory of apkRepair
 ```
 
 ## Install
