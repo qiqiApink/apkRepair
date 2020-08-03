@@ -105,7 +105,7 @@ $ java -jar ./build/libs/apkRepair.jar path_to_apk
 groupID__artefactID_version.jar or .aar
 ```
 
-**Example:** commons-collections__commons-collections_3.2.1.jar
+Example: commons-collections__commons-collections_3.2.1.jar
 
 #### Library Description XML File Name Format
 
@@ -132,7 +132,7 @@ Example: commons-collections__commons-collections_3.2.1.xml
 
 保持默认即可，即与库文件名和库描述文件名相同
 
-**Example:** commons-collections__commons-collections_3.2.1.libv
+Example: commons-collections__commons-collections_3.2.1.libv
 
 ### Add patch
 
@@ -140,15 +140,23 @@ patch文件的生成需要手动完成，并需要将生成patch文件放在`./p
 
 在[Snyk网站漏洞库](https://snyk.io/vuln?type=maven)中查找相应的三方库漏洞的漏洞信息，其中包含Github Commit的链接，在Github Commit中我们可以获取到java文件的源码补丁，将源码补丁下载到本地，用`javac`命令将.java源文件编译成.class文件，再使用dx工具将.class文件编译成.dex文件，使用dx工具需要先下载Android Sdk，dx工具一般存放于`sdk/build-tools/version/`下。
 
-**Note:** 多个.class文件编译成一个.dex文件
+**Note:**
 
-**dx Usage:**
+* 编译.java源码补丁为.class时，可以将在预处理模块生成三方库profile文件过程中所使用的库文件.jar / .aar作为依赖来编译这些零散的.java源码
+
+  Example: `$ javac -cp .:commons-collections__commons-collections_3.2.1.jar InvokerTransformer.java`
+  
+* 我们要将生成的.class文件替换到上一步所使用的.jar中，否则在使用dx工具进行编译时，会报找不到路径的错误
+
+* 多个.class文件编译成一个.dex文件
+
+#### dx Usage:
 
 ```
 $ ./dx --dex --output=ouput_dex_file_name class_file_or_files
 ```
 
-**Example:**
+Example:
 
 * 单个.class文件：`$ ./dx --dex --output=commons-collections__commons-collections_3.2.1.dex org/apache/commons/collections/functors/InvokerTransformer.class`
 
@@ -160,6 +168,6 @@ $ ./dx --dex --output=ouput_dex_file_name class_file_or_files
 groupID__artefactID_version.dex
 ```
 
-**Example:** commons-collections__commons-collections_3.2.1.dex
+Example: commons-collections__commons-collections_3.2.1.dex
 
 这里的version是patch所能被使用的三方库的最高版本。同一个三方库的不同版本包含的漏洞可能不同，所以我们要对每一个版本生成其对应的patch文件。但是连续版本之间可能patch文件相同，为了节约存储空间，相同patch文件之间仅保留一个，同时在这种情况下版本号是连续的，所以将其命名格式中的版本号设为适用该patch文件的最大版本号。使用中根据apk检测出来的三方库及其对应版本，选择不同的patch文件进行修复。
