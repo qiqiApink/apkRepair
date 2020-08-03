@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<library>
+    <name>commons-collections__commons-collections</name>
+
+    <category>Vulnerable</category>
+
+    <version>3.2.2</version>
+
+    <releasedate>12.11.2015</releasedate>
+
+    <comment></comment>
+</library>

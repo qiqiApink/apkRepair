@@ -1,0 +1,45 @@
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    options.compilerArgs += ["-XDignore.symbol.file", "-Xdoclint:none", "-Xlint:none", "-nowarn"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+configurations {
+    provided
+    // Make implementation extend from our provided configuration so that classes from dependencies can be bundled
+    implementation.extendsFrom(provided)
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+    provided files("${System.properties['java.home']}/../lib/tools.jar")
+    provided fileTree(dir: 'libs',include: ['*.jar'])
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Patch.Patch',
+                         'Tool': 'apkRepair',
+                      'Version': '1.0'
+    }
+
+    // build fat jar
+    from {
+        configurations.provided.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
