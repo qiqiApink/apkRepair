@@ -105,13 +105,13 @@ $ java -jar ./build/libs/apkRepair.jar path_to_apk
 groupID__artefactID_version.jar or .aar
 ```
 
-Example: commons-collections__commons-collections_3.2.1.jar
+> Example: commons-collections__commons-collections_3.2.1.jar
 
 #### Library Description XML File Name Format
 
 文件名应和库文件名相同
 
-Example: commons-collections__commons-collections_3.2.1.xml
+> Example: commons-collections__commons-collections_3.2.1.xml
 
 ```xml
 <?xml version="1.0"?>
@@ -132,7 +132,7 @@ Example: commons-collections__commons-collections_3.2.1.xml
 
 保持默认即可，即与库文件名和库描述文件名相同
 
-Example: commons-collections__commons-collections_3.2.1.libv
+> Example: commons-collections__commons-collections_3.2.1.libv
 
 ### Add patch
 
@@ -168,6 +168,8 @@ Example:
 groupID__artefactID_version.dex
 ```
 
-Example: commons-collections__commons-collections_3.2.1.dex
+> Example: commons-collections__commons-collections_3.2.1.dex
 
 这里的version是patch所能被使用的三方库的最高版本。同一个三方库的不同版本包含的漏洞可能不同，所以我们要对每一个版本生成其对应的patch文件。但是连续版本之间可能patch文件相同，为了节约存储空间，相同patch文件之间仅保留一个，同时在这种情况下版本号是连续的，所以将其命名格式中的版本号设为适用该patch文件的最大版本号。使用中根据apk检测出来的三方库及其对应版本，选择不同的patch文件进行修复。
+
+Example: 以commons-collections::commons-collections这个库为例，版本\[,3.2.2)包含CVE-2015-6420这个漏洞，除此之外版本\[3.0,3.2.2)还存在CVE-2015-4852这个漏洞。很容易知道，版本\[,3.0)对应一个patch文件命名为commons-collections__commons-collections_2.1.1.dex（在maven-central仓库中我们可以查到版本3.0之前最大版本号为2.1.1），版本\[3.0,3.2.2)对应另一个patch文件，命名为commons-collections__commons-collections_3.2.1.dex。
